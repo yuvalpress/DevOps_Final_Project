@@ -76,10 +76,17 @@ pipeline {
                         // for Daniel's check
                         sh 'nohup python clean_environment.py &'
                     } else {
-                        bat 'start/min python clean_environment.py'
+                        bat 'start/min python clean_environment.pyjkjk'
                     }
                 }
             }
+        }
+    }
+    post {
+        failure {
+            emailext body: 'Pipeline has failed.',
+            recipientProviders: [[$class: 'DevelopersRecipientProvider'],
+            [$class: 'RequesterRecipientProvider']], subject: 'Test'
         }
     }
 }
