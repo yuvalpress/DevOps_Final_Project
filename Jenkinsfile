@@ -4,9 +4,9 @@ pipeline {
         stage('Check Github for commit') {
             steps {
                 script {
-                    properties([pipelineTriggers([pollSCM('* * * * *')])])
+                    properties([pipelineTriggers([pollSCM('H/30 * * * *')])])
                 }
-                git 'https://github.com/Dgotlieb/JenkinsTest.git'
+                git 'https://github.com/yuvalpress/Devops_Project.git'
             }
         }
         stage('run python') {
