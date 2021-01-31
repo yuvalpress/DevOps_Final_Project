@@ -35,7 +35,7 @@ pipeline {
             steps{
                 when {
                     // if the RUN_TASK parameter is "2"
-                    expression { params.RUN_TASK == "2" }
+                    expression { params.RUN_TASK == 2 }
                 }
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
@@ -51,7 +51,7 @@ pipeline {
             steps{
                 when {
                     // if the RUN_TASK parameter is "1"
-                    expression { params.RUN_TASK == "1" }
+                    expression { params.RUN_TASK == 1 }
                 }
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
