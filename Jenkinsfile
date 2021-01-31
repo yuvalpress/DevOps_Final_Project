@@ -14,12 +14,68 @@ pipeline {
                 script {
                     if (Boolean.valueOf(env.UNIX)) {
                         // for Daniel's check
-                        bat 'rest_app.py'
+                        sh nohup python 'rest_app.py'
                     } else {
-                        bat 'rest_app.py'
+                        bat start/min python 'rest_app.py'
                     }
                 }
             }
         }
+        stage('Run web_app.py') {
+            steps {
+                script {
+                    if (Boolean.valueOf(env.UNIX)) {
+                        // for Daniel's check
+                        sh nohup python 'web_app.py'
+                    } else {
+                        bat start/min python 'web_app.py'
+                    }
+                }
+            }
+        }
+        stage('Run backend_testing.py')
+            steps{
+                script{
+                    if (Boolean.valueOf(env.UNIX)) {
+                        // for Daniel's check
+                        sh nohup python 'backend_testing.py'
+                    } else {
+                        bat start/min python 'backend_testing.py'
+                    }
+                }
+            }
+        stage('Run frontend_testing.py')
+            steps{
+                script{
+                    if (Boolean.valueOf(env.UNIX)) {
+                        // for Daniel's check
+                        sh nohup python 'frontend_testing.py'
+                    } else {
+                        bat start/min python 'backend_testing.py'
+                    }
+                }
+            }
+        stage('Run combined_testing.py')
+            steps{
+                script{
+                    if (Boolean.valueOf(env.UNIX)) {
+                        // for Daniel's check
+                        sh nohup python 'combined_testing.py'
+                    } else {
+                        bat start/min python 'combined_testing.py'
+                    }
+                }
+            }
+        stage('Run clean_environment.py')
+            steps{
+                script{
+                    if (Boolean.valueOf(env.UNIX)) {
+                        // for Daniel's check
+                        sh nohup python 'clean_environment.py'
+                    } else {
+                        bat start/min python 'clean_environment.py'
+                    }
+                }
+            }
     }
 }
