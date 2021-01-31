@@ -14,9 +14,9 @@ pipeline {
                 script {
                     if (Boolean.valueOf(env.UNIX)) {
                         // for Daniel's check
-                        sh nohup python 'rest_app.py'
+                        sh 'nohup python rest_app.py &'
                     } else {
-                        bat start/min python rest_app.py
+                        bat 'start/min python rest_app.py'
                     }
                 }
             }
@@ -26,9 +26,9 @@ pipeline {
                 script {
                     if (Boolean.valueOf(env.UNIX)) {
                         // for Daniel's check
-                        sh nohup python 'web_app.py'
+                        sh 'nohup python web_app.py &'
                     } else {
-                        bat start/min python 'web_app.py'
+                        bat 'start/min python web_app.py'
                     }
                 }
             }
@@ -38,9 +38,9 @@ pipeline {
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
                         // for Daniel's check
-                        sh nohup python 'backend_testing.py'
+                        sh 'nohup python backend_testing.py &'
                     } else {
-                        bat start/min python 'backend_testing.py'
+                        bat 'start/min python backend_testing.py'
                     }
                 }
             }
@@ -50,9 +50,9 @@ pipeline {
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
                         // for Daniel's check
-                        sh nohup python 'frontend_testing.py'
+                        sh 'nohup python frontend_testing.py &'
                     } else {
-                        bat start/min python 'backend_testing.py'
+                        bat 'start/min python backend_testing.py'
                     }
                 }
             }
@@ -62,9 +62,9 @@ pipeline {
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
                         // for Daniel's check
-                        sh nohup python 'combined_testing.py'
+                        sh 'nohup python combined_testing.py &'
                     } else {
-                        bat start/min python 'combined_testing.py'
+                        bat 'start/min python combined_testing.py'
                     }
                 }
             }
@@ -74,9 +74,9 @@ pipeline {
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
                         // for Daniel's check
-                        sh nohup python 'clean_environment.py'
+                        sh 'nohup python clean_environment.py &'
                     } else {
-                        bat start/min python 'clean_environment.py'
+                        bat 'start/min python clean_environment.py'
                     }
                 }
             }
