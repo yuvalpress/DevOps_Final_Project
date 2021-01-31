@@ -83,7 +83,7 @@ pipeline {
         }
     }
     post {
-        failure {
+        always {
             emailext body: 'Pipeline has failed.',
             recipientProviders: [[$class: 'DevelopersRecipientProvider'],
             [$class: 'RequesterRecipientProvider']], subject: 'Test'
