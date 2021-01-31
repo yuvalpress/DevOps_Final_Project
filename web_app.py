@@ -4,13 +4,14 @@ The frontend API functionality is to return a Username which corresponds to a gi
 If the user name is found in the users table, the API will return it.
 Otherwise, it will return an error.
 """
+import os
+import signal
+
 from flask import Flask
 
 from Module.db_connector import connect
 from Module.db_connector import disconnect
 from Module.db_connector import select
-
-from pypika import Table, Query
 
 app = Flask(__name__)
 
@@ -29,5 +30,10 @@ def get_user_name(user_id):
         disconnect(conn, cursor)
         return "<h1 id='error'>" + 'no such user: ' + user_id + "</h1>"
 
+@app.route("/stop_server")
+def stop_server():
+    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+
+    return {"Result": "Server Stopped"}
 
 app.run(host='127.0.0.1', debug=True, port=5001)

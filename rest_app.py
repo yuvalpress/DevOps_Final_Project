@@ -13,6 +13,9 @@ from datetime import datetime
 
 from Module.db_connector import connect, disconnect, select, post, put, delete
 
+import os
+import signal
+
 app = Flask(__name__)
 
 
@@ -119,5 +122,10 @@ def users_actions(user_id):
         res = delete_from_table(user_id)
         return res
 
+@app.route("/stop_server")
+def stop_server():
+    os.kill(os.getpid(), signal.CTRL_C_EVENT)
+
+    return {"Result": "Server Stopped"}
 
 app.run(host='127.0.0.1', debug=True, port=5000)
