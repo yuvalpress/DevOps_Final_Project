@@ -22,22 +22,22 @@ pipeline {
             }
         }
         stage('Run backend_testing.py') {
-            steps{
                 when {
                     // if the RUN_TASK parameter is "2"
                     expression { params.RUN_TASK == 2 }
                 }
+            steps{
                 script{
                     bat 'start/min python backend_testing.py'
                 }
             }
         }
         stage('Run frontend_testing.py') {
+            when {
+                // if the RUN_TASK parameter is "1"
+                expression { params.RUN_TASK == 1 }
+            }
             steps{
-                when {
-                    // if the RUN_TASK parameter is "1"
-                    expression { params.RUN_TASK == 1 }
-                }
                 script{
                     bat 'start/min python backend_testing.py'
                 }
