@@ -64,10 +64,7 @@ pipeline {
             }
         }
         stage('Run combined_testing.py') {
-            when {
-                // if the RUN_TASK parameter is "3"
-                expression { params.RUN_TASK == "3" }
-            }
+            when {expression { params.RUN_TASK == 3 }}
             steps{
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
