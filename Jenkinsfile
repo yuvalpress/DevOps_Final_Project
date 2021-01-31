@@ -16,7 +16,7 @@ pipeline {
                         // for Daniel's check
                         sh nohup python 'rest_app.py'
                     } else {
-                        bat start/min python 'rest_app.py'
+                        bat start/min python rest_app.py
                     }
                 }
             }
