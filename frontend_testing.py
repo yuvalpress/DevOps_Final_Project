@@ -7,9 +7,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from Project.Module.db_connector import connect
-from Project.Module.db_connector import disconnect
-
 try:
     chrome = webdriver.Chrome(".\\chromedriver.exe")
     chrome.get("http://127.0.0.1:5001/get_user_name/1")

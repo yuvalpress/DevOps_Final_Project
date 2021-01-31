@@ -6,8 +6,9 @@ Otherwise, it will return an error.
 """
 from flask import Flask
 
-from Project.Module.db_connector import connect
-from Project.Module.db_connector import disconnect
+from Module.db_connector import connect
+from Module.db_connector import disconnect
+from Module.db_connector import select
 
 from pypika import Table, Query
 
@@ -16,18 +17,16 @@ app = Flask(__name__)
 
 @app.route("/get_user_name/<user_id>")
 def get_user_name(user_id):
-    # connect to database and get cursor
-    conn, cursor = connect()
 
-    # Create table and query using pypika
-    users_dateTime = Table('BSqnOU0gA6.users_dateTime')
-    q = Query.from_(users_dateTime).select("user_name").where(users_dateTime.field("user_id") == user_id).get_sql().replace('"', "")
-    user_name = cursor.execute(q)  # SELECT user_name FROM BSqnOU0gA6.users_dateTime WHERE user_id = %s
+    # user db_connection library to select data from db
+    conn, cursor = connect()
+    user_name = select(table='BSqnOU0gA6.users_dateTime', select_value="*", where=["user_id", user_id], conn=conn, cursor=cursor)  # SELECT user_name FROM BSqnOU0gA6.users_dateTime WHERE user_id = %s
     if user_name != 0:
         for row in cursor:
             disconnect(conn, cursor)
-            return "<h1 id='user'>" + row[0] + "</h1>"
+            return "<h1 id='user'>" + row[1] + "</h1>"
     else:
+        disconnect(conn, cursor)
         return "<h1 id='error'>" + 'no such user: ' + user_id + "</h1>"
 
 

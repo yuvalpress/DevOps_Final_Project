@@ -9,20 +9,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 import requests
-from pypika import Query, Table, Field
 
-from Project.Module.db_connector import connect
-from Project.Module.db_connector import disconnect
+from Module.db_connector import connect, disconnect, select
 
-from pypika import Table, Query
 # Backend check part
 try:
     # Connect to database and get cursor
     conn, cursor = connect()
 
     # Get all data from config table
-    q = Query.from_('BSqnOU0gA6.config').select("*").get_sql().replace('"', "")  # "SELECT * FROM BSqnOU0gA6.config"
-    cursor.execute(q)
+
+    select('BSqnOU0gA6.config', conn=conn, cursor=cursor)
     last_line = list(cursor)[cursor.arraysize]
 
     user_id = input("Insert requested id for entry creation: ")
@@ -39,10 +36,7 @@ try:
         print("Status code is \'%i\', Data retrieved from REST API is the same as posted" % data.status_code)
 
         # Check if user requested to be created by user is stored under the requested id
-        # Create table and query using pypika
-        table = Table("BSqnOU0gA6.users_dateTime")
-        q = Query.from_(table).select("*").where(table.field("user_id") == user_id)
-        cursor.execute(q) # "SELECT * from BSqnOU0gA6.users_dateTime WHERE user_id = %s", args=user_id
+        select("BSqnOU0gA6.users_dateTime", conn=conn, cursor=cursor)
         for row in cursor:
             print("User\'s ID and Name are \'%s\' and \'%s\' and the values the user asked for are ID \'%s\' and Name "
                   "\'%s\'." % (row[0], row[1], user_id, user_name))
@@ -70,11 +64,8 @@ try:
             print("Status code is \'%i\', User was created inside table but with another ID." % data.status_code)
 
             # Get the last user created (the last id as created in post method)
-            # Create table and query using pypika
-            table = Table("BSqnOU0gA6.users_dateTime")
-            q = Query.from_(table).select("*").get_sql().replace('"', "")
 
-            cursor.execute(q) # "SELECT * from BSqnOU0gA6.users_dateTime"
+            select("BSqnOU0gA6.users_dateTime", conn=conn, cursor=cursor)
             data = list(cursor)[-1]
             print(
                 "User\'s ID and Name are \'%s\' and \'%s\' and the values the user asked for are ID \'%s\' and Name "
