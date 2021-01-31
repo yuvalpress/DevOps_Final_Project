@@ -29,6 +29,7 @@ pipeline {
                         sh nohup python 'web_app.py'
                     } else {
                         bat start/min python 'web_app.py'
+                    }
                 }
             }
         }
