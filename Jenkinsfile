@@ -29,11 +29,10 @@ pipeline {
                         sh nohup python 'web_app.py'
                     } else {
                         bat start/min python 'web_app.py'
-                    }
                 }
             }
         }
-        stage('Run backend_testing.py')
+        stage('Run backend_testing.py') {
             steps{
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
@@ -44,7 +43,8 @@ pipeline {
                     }
                 }
             }
-        stage('Run frontend_testing.py')
+        }
+        stage('Run frontend_testing.py') {
             steps{
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
@@ -55,7 +55,8 @@ pipeline {
                     }
                 }
             }
-        stage('Run combined_testing.py')
+        }
+        stage('Run combined_testing.py') {
             steps{
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
@@ -66,7 +67,8 @@ pipeline {
                     }
                 }
             }
-        stage('Run clean_environment.py')
+        }
+        stage('Run clean_environment.py') {
             steps{
                 script{
                     if (Boolean.valueOf(env.UNIX)) {
@@ -77,5 +79,6 @@ pipeline {
                     }
                 }
             }
+        }
     }
 }
