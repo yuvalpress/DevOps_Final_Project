@@ -9,13 +9,14 @@ pipeline {
                 git 'https://github.com/yuvalpress/Devops_Project.git'
             }
         }
-        stage('run python') {
+        stage('Run rest_app.py') {
             steps {
                 script {
                     if (Boolean.valueOf(env.UNIX)) {
-                        sh 'python 1.py'
+                        // for Daniel's check
+                        bat 'rest_app.py'
                     } else {
-                        bat 'python 1.py'
+                        bat 'rest_app.py'
                     }
                 }
             }
