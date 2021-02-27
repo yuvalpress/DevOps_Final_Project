@@ -36,6 +36,45 @@ pipeline {
                 }
             }
         }
+        stage('Build and Push Docker Image') {
+            steps{
+                script{
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                        docker.withRegistry('',registryCredentials){
+                            dockerImage.push()
+                        }
+                }
+            }
+        }
+        stage('Set version for docker-compose') {
+            steps{
+                script{
+                    bat "echo IMAGE_TAG=${BUILD_NUMBER} > .env"
+                }
+            }
+        }
+        stage('Run docker-compose.yml'){
+            steps{
+                script{
+                    bat "docker-compose up -d"
+                }
+            }
+        }
+        stage('Run backend_testing.py') {
+            steps{
+                script{
+                    bat 'start/min python docker_backend_testing.py'
+                }
+            }
+        }
+        stage('Run clean_environment.py') {
+            steps{
+                script{
+                    bat "docker-compose down"
+                    bat "docker rmi rest_app:${BUILD_NUMBER}"
+                }
+            }
+        }
     }
     post {
         always {
