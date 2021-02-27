@@ -24,7 +24,7 @@ def select_from_table(user_id):
         # Connect to database and get cursor
         conn, cursor = connect()
 
-        select(table="dbo.users_dateTime", where=["user_id", user_id], conn=conn,
+        select(table="BSqnOU0gA6.users_dateTime", where=["user_id", user_id], conn=conn,
                cursor=cursor)  # set the cursor
 
         name = None
@@ -44,24 +44,24 @@ def select_from_table(user_id):
 def insert_into_table(user_id):
     try:
         # Prepared Statement
-        sql = "INSERT INTO dbo.users_dateTime (user_id, user_name, creation_date) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO BSqnOU0gA6.users_dateTime (user_id, user_name, creation_date) VALUES (%s, %s, %s)"
 
         # Connect to database and get cursor
         conn, cursor = connect()
 
         # Check if id exists and if it does it will get the next available id (1 above the last line in table)
-        select(table="dbo.users_dateTime", where=["user_id", user_id], conn=conn, cursor=cursor)
+        select(table="BSqnOU0gA6.users_dateTime", where=["user_id", user_id], conn=conn, cursor=cursor)
         cursorLength = cursor.rowcount
 
         if cursorLength > 0:
-            select(table="dbo.users_dateTime", conn=conn, cursor=cursor)
+            select(table="BSqnOU0gA6.users_dateTime", conn=conn, cursor=cursor)
             last_id = (list(cursor)[-1])[0]
             user_id = last_id + 1
 
         data = request.json  # Get data from json payload
         date = datetime.now()  # Get current date and time for creation date field in users table
 
-        post("dbo.users_dateTime", [user_id, str(data.get("user_name")), date.strftime("%Y-%m-%d %H:%M:%S")],
+        post("BSqnOU0gA6.users_dateTime", [user_id, str(data.get("user_name")), date.strftime("%Y-%m-%d %H:%M:%S")],
              conn=conn, cursor=cursor)
 
         # Disconnect from Database
@@ -78,7 +78,7 @@ def update_table(user_id):
     try:
 
         data = request.json
-        answer = put("dbo.users_dateTime", ["user_name", data.get("user_name")], ["user_id", user_id])
+        answer = put("BSqnOU0gA6.users_dateTime", ["user_name", data.get("user_name")], ["user_id", user_id])
 
         # Return json of success of failure
         if answer == "Success":
@@ -92,7 +92,7 @@ def update_table(user_id):
 
 def delete_from_table(user_id):
     try:
-        answer = delete("dbo.users_dateTime", ["user_id", user_id])
+        answer = delete("BSqnOU0gA6.users_dateTime", ["user_id", user_id])
 
         # Return json of success or failure
         if answer == "Success":
