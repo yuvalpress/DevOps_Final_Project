@@ -12,7 +12,7 @@ pipeline {
                     properties([pipelineTriggers([pollSCM('H/30 * * * *')])])
                     properties([buildDiscarder(logRotator(daysToKeepStr: '5', numToKeepStr: '20')),])
                 }
-                git 'https://github.com/yuvalpress/Devops_Project_3.git'
+                git "https://github.com/yuvalpress/Devops_Project_3.git"
             }
         }
         stage('Run rest_app.py') {
