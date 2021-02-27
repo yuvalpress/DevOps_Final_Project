@@ -67,7 +67,7 @@ pipeline {
                 }
             }
         }
-        stage('Run clean_environment.py') {
+        stage('Clean dockerized environment') {
             steps{
                 script{
                     bat "docker-compose down"
