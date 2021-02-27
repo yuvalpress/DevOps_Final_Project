@@ -1,8 +1,8 @@
 version: '3'
 services:
-  web:
+  rest_app:
+    image: "rest_app:${IMAGE_TAG}"
     build: .
+    container_name: "Jenkins_build_${IMAGE_TAG}"
     ports:
      - "5000:5000"
-  redis:
-    image: "redis:alpine"

@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+        registry = "yuvalpress/project_3"
+        registryCredentials = "docker_hub"
+        dockerImage = ""
+    }
     stages {
         stage('Check Github for commit') {
             steps {
@@ -18,72 +23,64 @@ pipeline {
                 }
             }
         }
-        stage('Run web_app.py') {
-            steps {
-                script {
-                    if (Boolean.valueOf(env.UNIX)) {
-                        // for Daniel's check
-                        sh 'nohup python web_app.py &'
-                    } else {
-                        bat 'start/min python web_app.py'
-                    }
-                }
-            }
-        }
         stage('Run backend_testing.py') {
             steps{
                 script{
-                    if (Boolean.valueOf(env.UNIX)) {
-                        // for Daniel's check
-                        sh 'nohup python backend_testing.py &'
-                    } else {
-                        bat 'start/min python backend_testing.py'
-                    }
-                }
-            }
-        }
-        stage('Run frontend_testing.py') {
-            steps{
-                script{
-                    if (Boolean.valueOf(env.UNIX)) {
-                        // for Daniel's check
-                        sh 'nohup python frontend_testing.py &'
-                    } else {
-                        bat 'start/min python backend_testing.py'
-                    }
-                }
-            }
-        }
-        stage('Run combined_testing.py') {
-            steps{
-                script{
-                    if (Boolean.valueOf(env.UNIX)) {
-                        // for Daniel's check
-                        sh 'nohup python combined_testing.py &'
-                    } else {
-                        bat 'start/min python combined_testing.py'
-                    }
+                        bat 'start/min python docker_backend_testing.py'
                 }
             }
         }
         stage('Run clean_environment.py') {
             steps{
                 script{
-                    if (Boolean.valueOf(env.UNIX)) {
-                        // for Daniel's check
-                        sh 'nohup python clean_environment.py &'
-                    } else {
                         bat 'start/min python clean_environment.py'
-                    }
                 }
             }
         }
+        stage('Build and Push Docker Image') {
+            steps{
+                script{
+                        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                        docker.withRegistry('',registryCredentials){
+                            dockerImage.push()
+                        }
+                }
+            }
+        }
+        stage('Set version for docker-compose') {
+            steps{
+                script{
+                    bat "echo IMAGE_TAG=${BUILD_NUMBER} > .env"
+                }
+            }
+        }
+        stage('Run docker-compose.yml'){
+            steps{
+                script{
+                    bat "docker-compose up -d"
+                }
+            }
+        }
+        stage('Run backend_testing.py') {
+            steps{
+                script{
+                    bat 'start/min python docker_backend_testing.py'
+                }
+            }
+        }
+        stage('Run clean_environment.py') {
+            steps{
+                script{
+                    bat "docker-compose down"
+                    bat "docker rmi rest_app:${BUILD_NUMBER}"
+                }
+            }
+        }
+
     }
     post {
-        failure {
-            emailext body: 'Pipeline has failed.',
-            recipientProviders: [[$class: 'DevelopersRecipientProvider'],
-            [$class: 'RequesterRecipientProvider']], subject: 'Test'
+        always {
+            bat "docker rmi $registry:$BUILD_NUMBER"
         }
     }
 }
