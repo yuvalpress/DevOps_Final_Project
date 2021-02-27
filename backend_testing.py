@@ -7,12 +7,10 @@ import requests
 from Module.db_connector import connect, disconnect, select
 from Module.db_connector import disconnect
 
-from pypika import Table, Query
-
 try:
     # Get inputs from user
-    user_id = input("Insert requested id for entry creation: ")
-    user_name = input("Enter a user name for database entry creation: ")
+    user_id = 2
+    user_name = "yuval press"
 
     # request a post action to store data inside the database
     requests.post("http://127.0.0.1:5000/users/{}".format(user_id), json={"user_name": user_name})
@@ -54,7 +52,6 @@ try:
                 "\'%s\'." % (line[0], line[1], user_id, user_name))
 
             disconnect(conn, cursor)
-
 
 
 except Exception as err:

@@ -7,18 +7,14 @@ pipeline {
                     properties([pipelineTriggers([pollSCM('H/30 * * * *')])])
                     properties([buildDiscarder(logRotator(daysToKeepStr: '5', numToKeepStr: '20')),])
                 }
-                git 'https://github.com/yuvalpress/Devops_Project.git'
+                git 'https://github.com/yuvalpress/Devops_Project_3.git'
             }
         }
         stage('Run rest_app.py') {
             steps {
                 script {
-                    if (Boolean.valueOf(env.UNIX)) {
-                        // for Daniel's check
-                        sh 'nohup python rest_app.py &'
-                    } else {
-                        bat 'start/min python rest_app.py'
-                    }
+                        bat "docker build -t rest_app ."
+                        bat "docker run --name rest_app -p 5000:5000 -d rest_app"
                 }
             }
         }
