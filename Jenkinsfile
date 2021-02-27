@@ -60,7 +60,7 @@ pipeline {
                 }
             }
         }
-        stage('Run backend_testing.py') {
+        stage('Run docker_backend_testing.py') {
             steps{
                 script{
                     bat 'start/min python docker_backend_testing.py'
