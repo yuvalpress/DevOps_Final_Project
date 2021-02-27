@@ -18,15 +18,14 @@ pipeline {
         stage('Run rest_app.py') {
             steps {
                 script {
-                        bat "docker build -t rest_app ."
-                        bat "docker run --name rest_app -p 5000:5000 -d rest_app"
+                        bat "start/min python rest_app.py"
                 }
             }
         }
         stage('Run backend_testing.py') {
             steps{
                 script{
-                        bat 'start/min python docker_backend_testing.py'
+                        bat 'start/min python backend_testing.py'
                 }
             }
         }
