@@ -1,5 +1,19 @@
 version: '3'
+
 services:
+  mysql:
+    image: mysql
+    container_name: mysql_test
+    environment:
+        MYSQL_ROOT_PASSWORD: Yy054236
+        MYSQL_DATABASE: dbo
+
+    volumes:
+        - ./table.sql:/docker-entrypoint-initdb.d/table.sql
+
+    ports:
+      - "3308:3306"
+
   rest_app:
     image: "rest_app:${IMAGE_TAG}"
     build: .

@@ -8,7 +8,7 @@ from pypika import Table, Query
 
 
 def connect():
-    conn = pymysql.connect(host='remotemysql.com', port=3306, user='BSqnOU0gA6', passwd='afk3ad3PXB', db='BSqnOU0gA6')
+    conn = pymysql.connect(host='mysql_test', port=3306, user='root', passwd='Yy054236', db='dbo')
     conn.autocommit(True)
     cursor = conn.cursor()
 
