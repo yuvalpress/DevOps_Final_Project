@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "Project_Chart.name" -}}
+{{- define "yuval-press.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "Project_Chart.fullname" -}}
+{{- define "yuval-press.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "Project_Chart.chart" -}}
+{{- define "yuval-press.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "Project_Chart.labels" -}}
-helm.sh/chart: {{ include "Project_Chart.chart" . }}
-{{ include "Project_Chart.selectorLabels" . }}
+{{- define "yuval-press.labels" -}}
+helm.sh/chart: {{ include "yuval-press.chart" . }}
+{{ include "yuval-press.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "Project_Chart.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "Project_Chart.name" . }}
+{{- define "yuval-press.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "yuval-press.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "Project_Chart.serviceAccountName" -}}
+{{- define "yuval-press.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "Project_Chart.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "yuval-press.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
