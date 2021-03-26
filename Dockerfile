@@ -4,6 +4,7 @@ ADD . /code
 WORKDIR /code
 
 RUN pip install flask
+RUN pip install kubernetes
 RUN pip install pymysql
 RUN pip install pypika
 

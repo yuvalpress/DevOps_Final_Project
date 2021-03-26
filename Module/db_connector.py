@@ -5,10 +5,19 @@ A module which:
 """
 import pymysql
 from pypika import Table, Query
+from kubernetes import client, config
+import base64
 
 
 def connect():
-    conn = pymysql.connect(host='remotemysql.com', port=3306, user='BSqnOU0gA6', passwd='afk3ad3PXB', db='BSqnOU0gA6')
+    # get secret from kubernetes cluster
+    config.load_kube_config()
+    v1 = client.CoreV1Api()
+    secret = str(v1.read_namespaced_secret("db-pass", "default").data)
+    username = str(base64.b64decode(secret.strip().split()[3].translate('}\''))).strip("b")
+    password = str(base64.b64decode(secret.strip().split()[1].translate('}\''))).strip("b")
+
+    conn = pymysql.connect(host='remotemysql.com', port=3306, user=username, passwd=password, db='BSqnOU0gA6')
     conn.autocommit(True)
     cursor = conn.cursor()
 

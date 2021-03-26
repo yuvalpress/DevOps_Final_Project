@@ -78,7 +78,7 @@ pipeline {
         stage('Deploy HELM Chart') {
             steps{
                 script{
-                    bat "helm install project_4 yuval-press --set image.version=${registry}:${BUILD_NUMBER}"
+                    bat "helm install project-4 yuval-press --set image.version=${registry}:${BUILD_NUMBER}"
                 }
             }
         }
