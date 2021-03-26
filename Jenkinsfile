@@ -85,7 +85,7 @@ pipeline {
         stage('Get Service URL'){
             steps{
                 script{
-                    bat "minikube service project_4-yuval-press --url > k8s_url.txt"
+                    bat "minikube service project-4-yuval-press --url > k8s_url.txt"
                 }
             }
         }
@@ -99,7 +99,7 @@ pipeline {
         stage('Clean HELM environment'){
             steps{
                 script{
-                    bat 'helm delete project_4'
+                    bat 'helm delete project-4'
                 }
             }
         }
