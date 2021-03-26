@@ -1,7 +1,7 @@
 version: '3'
 services:
   rest_app:
-    image: "yuvalpress/project_4:${IMAGE_TAG}"
+    image: "rest_app:${IMAGE_TAG}"
     build: .
     container_name: "Jenkins_build_${IMAGE_TAG}"
     ports:
