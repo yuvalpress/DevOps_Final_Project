@@ -13,7 +13,7 @@ from datetime import datetime
 import os
 
 is_pod = os.getenv("is_pod")
-if "yes" in is_pod:
+if "yes" == is_pod:
     from Module.db_connector import connect, disconnect, select, post, put, delete
 else:
     from Module.db_connector_inside_pod import connect, disconnect, select, post, put, delete
