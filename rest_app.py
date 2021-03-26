@@ -10,8 +10,13 @@ DELETE - Deletes a user which already exists in database.
 """
 from flask import Flask, request
 from datetime import datetime
+import os
 
-from Module.db_connector import connect, disconnect, select, post, put, delete
+is_pod = os.getenv("is_pod")
+if "yes" in is_pod:
+    from Module.db_connector import connect, disconnect, select, post, put, delete
+else:
+    from Module.db_connector_inside_pod import connect, disconnect, select, post, put, delete
 
 import os
 import signal
