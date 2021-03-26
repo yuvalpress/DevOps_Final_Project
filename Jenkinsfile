@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        registry = "yuvalpress/project_3"
+        registry = "yuvalpress/project_4"
         registryCredentials = "docker_hub"
         dockerImage = ""
     }
@@ -72,6 +72,34 @@ pipeline {
                 script{
                     bat "docker-compose down"
                     bat "docker rmi rest_app:${BUILD_NUMBER}"
+                }
+            }
+        }
+        stage('Deploy HELM Chart') {
+            steps{
+                script{
+                    bat "helm install project_4 yuval-press --set image.version=${registry}:${BUILD_NUMBER}"
+                }
+            }
+        }
+        stage('Get Service URL'){
+            steps{
+                script{
+                    bat "minikube service project_4-yuval-press --url > k8s_url.txt"
+                }
+            }
+        }
+        stage('Test Deployed App'){
+            steps{
+                script{
+                    bat 'start/min python k8s_backend_testing.py'
+                }
+            }
+        }
+        stage('Clean HELM environment'){
+            steps{
+                script{
+                    bat 'helm delete project_4'
                 }
             }
         }
