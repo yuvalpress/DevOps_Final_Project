@@ -14,9 +14,12 @@ import os
 
 is_pod = os.getenv("is_pod")
 if "yes" == is_pod:
-    from Module.db_connector import connect, disconnect, select, post, put, delete
-else:
+    print("here")
     from Module.db_connector_inside_pod import connect, disconnect, select, post, put, delete
+else:
+    from Module.db_connector import connect, disconnect, select, post, put, delete
+    print("here")
+
 
 import os
 import signal
