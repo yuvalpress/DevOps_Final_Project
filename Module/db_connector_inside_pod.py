@@ -17,7 +17,10 @@ def connect():
     username = str(base64.b64decode(secret.strip().split()[3].translate('}\''))).strip("b")
     password = str(base64.b64decode(secret.strip().split()[1].translate('}\''))).strip("b")
 
-    conn = pymysql.connect(host='remotemysql.com', port=3306, user=username, passwd=password, db='BSqnOU0gA6')
+    # get configmap from kubernetes cluster
+    host = v1.list_namespaced_config_map("default").items[0].data.get("host")
+
+    conn = pymysql.connect(host=host, port=3306, user=username, passwd=password, db='BSqnOU0gA6')
     conn.autocommit(True)
     cursor = conn.cursor()
 
